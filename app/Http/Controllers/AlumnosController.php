@@ -30,6 +30,26 @@ class AlumnosController extends Controller
         //Hacer que nos regrese al index
         return redirect()->route('alumnos.index');
     }
+    
+    //Estamos recibiendo parámetros de ruta a través de 
+    //parámetros de función
+    public function edit($id) { 
+        $alumno = Alumno::find($id);
+        $argumentos = array();
+        $argumentos['alumno'] = $alumno;
+        return view('alumnos.edit', $argumentos);
+    }
+
+    public function update(Request $request,$id){
+        //busca al alumno
+        $alumno = Alumno::find($id);
+        //Actualiza los datos en base a los valores del formulario
+        $alumno->nombre = $request->input('nombre');
+        $alumno->save();
+
+        return redirect()->route('alumnos.edit', $id)
+          ->with('exito', 'El alumno se ha actualizado exitosamente');
+    }
 
 }
 
